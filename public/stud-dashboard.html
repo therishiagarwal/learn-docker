@@ -1,6 +1,5 @@
 <!-- stud-dashboard.html -->
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,25 +10,38 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('background.jpg');
-            /* Add your background image URL */
+            background: linear-gradient(to right, #007BFF, #00FFFF);
             background-size: cover;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: #0056b3;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .navbar span {
+            color: #fff;
+            margin-right: 10px;
+            font-weight: bold;
         }
 
         .student-form {
             background-color: rgba(255, 255, 255, 0.9);
-            /* Add a semi-transparent background color */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 20px;
             max-width: 400px;
             width: 100%;
+            margin: 20px auto;
         }
 
         h1 {
@@ -64,22 +76,50 @@
         .input-fields button:hover {
             background-color: #0056b3;
         }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
     </style>
 </head>
 
 <body>
+    <div class="navbar">
+        <span id="welcomeText"></span>
+    </div>
+
     <div class="student-form">
         <h1>Student Input</h1>
         <div class="input-fields">
-            <input type="text" id="name" placeholder="Student Name">
             <input type="text" id="pincode" placeholder="Student Pincode">
             <input type="text" id="subject" placeholder="Student Subject">
             <button onclick="submitStudent()">Submit</button>
         </div>
     </div>
+
+    <div id="teacherDetailsContainer"></div>
+
     <script>
+        const userName = "John"; // Replace with the actual user's name
+
+        document.getElementById("welcomeText").textContent = `Hi, ${userName}!`;
+
+
         function submitStudent() {
-            const name = document.getElementById("name").value;
             const pincode = document.getElementById("pincode").value;
             const subject = document.getElementById("subject").value;
 
@@ -87,7 +127,7 @@
             const uid = subject.substring(0, 3).toUpperCase() + pincode;
 
             // Send UID to server for teacher lookup
-            fetch('/getTeacherDetails', {
+            fetch('http://localhost:5500/getTeacherDetails', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -105,27 +145,41 @@
                 .catch(error => console.error('Error:', error));
         }
 
-        function displayTeacherDetails(teacherDetails) {
-            // Display teacher details in a table
+        function displayTeacherDetails(teacherDetailsArray) {
+            const tableContainer = document.getElementById("teacherDetailsContainer");
+            tableContainer.innerHTML = ""; // Clear previous content
+
+            if (!Array.isArray(teacherDetailsArray)) {
+                console.error("Teacher details are not in the expected format.");
+                return;
+            }
+
             const table = document.createElement("table");
             table.innerHTML = `
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>City</th>
-                    <th>Subject</th>
-                    <th>UID</th>
-                </tr>
-                <tr>
-                    <td>${teacherDetails.name}</td>
-                    <td>${teacherDetails.email}</td>
-                    <td>${teacherDetails.city}</td>
-                    <td>${teacherDetails.subject}</td>
-                    <td>${teacherDetails.uid}</td>
-                </tr>
-            `;
-            document.body.appendChild(table);
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>City</th>
+            <th>Subject</th>
+            <th>UID</th>
+        </tr>
+    `;
+
+            teacherDetailsArray.forEach(details => {
+                table.innerHTML += `
+            <tr>
+                <td>${details.name}</td>
+                <td>${details.email}</td>
+                <td>${details.city}</td>
+                <td>${details.subject}</td>
+                <td>${details.uid}</td>
+            </tr>
+        `;
+            });
+
+            tableContainer.appendChild(table);
         }
+
     </script>
 </body>
 

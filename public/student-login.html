@@ -1,0 +1,116 @@
+<!-- student-login.html -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Student Login</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #007BFF, #00FFFF);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .student-form {
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+
+    .input-fields {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-fields input {
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .input-fields button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .input-fields button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="student-form">
+    <h1>Login as a Student</h1>
+    <div class="input-fields">
+      <input type="email" name="email" id="email" placeholder="Email Address" required>
+      <!-- Use "required" attribute to enforce client-side validation -->
+      <input type="password" name="password" id="password" placeholder="Password" required>
+      <button id="loginBtn">Login</button>
+      <a href="student-register.html">Don't have an account? Sign up here.</a>
+      <a href="index.html">Back to Home Page (Click Here).</a>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginBtn = document.getElementById("loginBtn");
+
+      loginBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // Use a relative URL to avoid hardcoding the domain
+        fetch('http://localhost:5500/login-student', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.success) {
+              alert("Login successful!");
+              location.href = "stud-dashboard.html";
+            } else {
+              alert("Login failed. Please check your credentials.");
+            }
+          })
+          .catch(error => console.error('Error:', error));
+      });
+    });
+  </script>
+</body>
+</html>

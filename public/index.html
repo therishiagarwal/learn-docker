@@ -1,0 +1,92 @@
+  <!-- index.html -->
+
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, #007BFF, #00FFFF);
+        /* Replace these color codes with your desired gradient colors */
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        /* Add a subtle box shadow */
+        transition: box-shadow 0.3s ease-in-out;
+        /* Smooth transition for the box shadow */
+      }
+
+      .container:hover {
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+        /* Increase box shadow on hover */
+      }
+
+      .question {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007BFF;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px;
+        transition: background-color 0.3s ease-in-out;
+        /* Smooth transition for button color */
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+        /* Darker color on hover */
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="question">
+        Are you a teacher?
+        <button class="btn" id="teacherLoginBtn">Login</button>
+        <button class="btn" id="teacherSignupBtn">Sign Up</button>
+      </div>
+      <div class="question">
+        Are you a student?
+        <button class="btn" id="studentLoginBtn">Login</button>
+        <button class="btn" id="studentSignupBtn">Sign Up</button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("click", function (event) {
+        const target = event.target;
+
+        if (target.id === "teacherLoginBtn") {
+          window.location.href = "teacher-login.html";
+        } else if (target.id === "teacherSignupBtn") {
+          window.location.href = "teacher-register.html";
+        } else if (target.id === "studentLoginBtn") {
+          window.location.href = "student-login.html";
+        } else if (target.id === "studentSignupBtn") {
+          window.location.href = "student-register.html";
+        }
+      });
+    </script>
+  </body>
+
+  </html>
